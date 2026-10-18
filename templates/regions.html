@@ -1,0 +1,2 @@
+{% extends "base.html" %}{% block body %}<h1 class="ph">All Regions</h1><input id="rf" class="filter" placeholder="Filter regions…">
+<section class="cards" id="rgrid">{% for r in regs %}<a class="card rv" data-s="{{ r.name|lower }} {{ r.capital|lower }}" href="{{ url_for('region', slug=r.slug) }}" style="--h:{{ (r.slug|length*37)%360 }}"><div class="mini"></div><h3>{{ r.name }} <span class="am2">{{ r.name_am or '' }}</span></h3><p>{{ r.about[:110] }}…</p><small>{{ r.population }} · {{ r.languages }}</small></a>{% endfor %}</section>{% endblock %}

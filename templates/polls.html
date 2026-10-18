@@ -1,0 +1,3 @@
+{% extends "base.html" %}{% block title %}Poll{% endblock %}{% block body %}<h1 class="ph">🗳 Community Poll</h1><div class="card quiz"><h3>{{ p.question }}</h3>
+{% if voted %}{% for o in opts %}<div class="bars"><div><span>{{ o.text }}</span><i style="width:{{ ((o.votes/total)*100)|round }}%">{{ o.votes }}</i></div></div>{% endfor %}<p class="empty">Thanks for voting!</p>
+{% else %}<form method="post" action="{{ url_for('poll_vote') }}">{% for o in opts %}<label class="opt"><input type="radio" name="opt" value="{{ o.id }}" required> {{ o.text }}</label>{% endfor %}<button class="btn">Vote</button></form>{% endif %}</div>{% endblock %}

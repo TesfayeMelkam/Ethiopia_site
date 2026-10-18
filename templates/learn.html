@@ -1,0 +1,17 @@
+{% extends "base.html" %}{% block title %}Learn Amharic{% endblock %}{% block body %}<section class="cover" style="--h:30"><span class="tag">Ge'ez script (Fidel)</span><h1>🔤 Learn Amharic</h1><p>Alphabet chart, numbers, days, phrases, flashcards and an alphabet quiz. Click a letter to hear it (if your browser has an Amharic voice).</p></section>
+<div data-tabs><div class="tabs"><button class="on" data-t="al">Alphabet</button><button data-t="nu">Numbers</button><button data-t="da">Days</button><button data-t="ph">Phrases</button><button data-t="fc">Flashcards</button><button data-t="aq">Alphabet quiz</button></div>
+<div class="pane on" data-p="al"><div class="tw"><table class="fc"><tr><th></th>{% for v in V %}<th>{{ v }}</th>{% endfor %}</tr>{% for c,forms in FIDEL %}<tr><th>{{ c }}</th>{% for ch in forms.split() %}<td class="am" data-r="{{ c }}{{ V[loop.index0] }}">{{ ch }}<small>{{ c }}{{ V[loop.index0] }}</small></td>{% endfor %}</tr>{% endfor %}</table></div></div>
+<div class="pane" data-p="nu"><div class="cards">{% for a,r,n in NUMBERS %}<div class="card"><h3 class="am">{{ a }}</h3><p>{{ r }} = {{ n }}</p></div>{% endfor %}</div></div>
+<div class="pane" data-p="da"><div class="cards">{% for a,r,e in DAYS %}<div class="card"><h3 class="am">{{ a }}</h3><p>{{ r }} = {{ e }}</p></div>{% endfor %}</div></div>
+<div class="pane" data-p="ph"><div class="tw"><table><tr><th>Amharic</th><th>Say it</th><th>Meaning</th></tr>{% for a,r,e in phrases %}<tr><td class="am">{{ a }}</td><td>{{ r }}</td><td>{{ e }}</td></tr>{% endfor %}</table></div></div>
+<div class="pane" data-p="fc"><div id="fcard" class="flash3" tabindex="0"></div><p><button class="btn small" id="fnx">Next ▶</button> <span class="empty">Click the card to flip</span></p></div>
+<div class="pane" data-p="aq"><div id="aq" class="quiz"></div></div></div>
+<script type="application/json" id="fd">{{ cards|tojson }}</script>
+<script>(()=>{const say=t=>{try{const u=new SpeechSynthesisUtterance(t);u.lang='am-ET';speechSynthesis.speak(u)}catch(e){}};
+document.querySelectorAll('.fc td').forEach(td=>td.onclick=()=>say(td.firstChild.textContent));
+const D=JSON.parse(document.getElementById('fd').textContent),fc=document.getElementById('fcard');let i=0,back=false;const sh=()=>{fc.textContent=D[i][back?1:0];fc.classList.toggle('back',back)};
+fc.onclick=()=>{back=!back;sh()};document.getElementById('fnx').onclick=()=>{i=Math.floor(Math.random()*D.length);back=false;sh()};sh();
+const cells=[...document.querySelectorAll('.fc td')].map(t=>[t.firstChild.textContent,t.dataset.r]),box=document.getElementById('aq');
+function ask(){const c=cells[Math.floor(Math.random()*cells.length)],o=[c];while(o.length<4){const x=cells[Math.floor(Math.random()*cells.length)];if(!o.includes(x))o.push(x)}o.sort(()=>Math.random()-.5);box.innerHTML='';
+ const h=document.createElement('h2');h.className='am';h.textContent=c[0];box.appendChild(h);const p=document.createElement('p');p.textContent='Which sound is this letter?';box.appendChild(p);
+ o.forEach(x=>{const b=document.createElement('button');b.className='opt';b.textContent=x[1];b.onclick=()=>{b.classList.add(x===c?'ok':'no');if(x!==c)[...box.querySelectorAll('.opt')].find(e=>e.textContent===c[1]).classList.add('ok');setTimeout(ask,900)};box.appendChild(b)})}ask()})()</script>{% endblock %}

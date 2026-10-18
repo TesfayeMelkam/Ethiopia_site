@@ -1,0 +1,8 @@
+{% extends "base.html" %}{% block title %}Kids{% endblock %}{% block body %}<section class="cover" style="--h:90"><span class="tag">For young explorers</span><h1>🧒 Ethiopia for Kids</h1><p>Fun facts and games about Ethiopia.</p></section>
+<h2 class="sec">Fun facts</h2><div class="cards">{% for e,t in K %}<div class="card"><h2>{{ e }}</h2><p>{{ t }}</p></div>{% endfor %}</div>
+<h2 class="sec">🎨 Colour the flag</h2><p class="empty">Tap each stripe to change its colour. Can you make the Ethiopian flag? (Hint: green, yellow, red from top to bottom.)</p>
+<svg viewBox="0 0 300 180" class="kflag" role="img" aria-label="flag colouring game"><rect id="s0" y="0" width="300" height="60" fill="#ddd"/><rect id="s1" y="60" width="300" height="60" fill="#ddd"/><rect id="s2" y="120" width="300" height="60" fill="#ddd"/></svg>
+<p><button class="btn" id="chk">Check my flag</button> <span id="res" class="star"></span></p>
+<p><a class="btn" href="{{ url_for('quiz') }}">🧠 Try the quiz</a> <a class="btn" href="{{ url_for('learn') }}">🔤 Count in Amharic</a></p>
+<script>(()=>{const C=['#ddd','#078930','#FCDD09','#DA121A','#1e5bb8'],S=[0,1,2].map(i=>document.getElementById('s'+i)),st=[0,0,0];S.forEach((s,i)=>s.onclick=()=>{st[i]=(st[i]+1)%C.length;s.setAttribute('fill',C[st[i]])});
+document.getElementById('chk').onclick=()=>document.getElementById('res').textContent=(st[0]==1&&st[1]==2&&st[2]==3)?'🎉 Correct! Green, yellow, red.':'Not yet. Try again!'})()</script>{% endblock %}

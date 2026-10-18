@@ -1,0 +1,12 @@
+{% extends "base.html" %}{% block title %}Library{% endblock %}{% block body %}
+<section class="cover" style="--h:40"><span class="tag">Read online or download</span><h1>📚 Ethiopia Library</h1><p>Open a book and read it page by page, or download it. Admins can add more books, PDFs and documents.</p></section>
+{% set cats = books|map(attribute='category')|select|unique|list %}
+<div class="libbar"><input id="lf" class="filter" placeholder="Search books…"><div class="chips" id="lc"><a href="#" data-c="" class="act">All</a>{% for c in cats %}<a href="#" data-c="{{ c }}">{{ c }}</a>{% endfor %}</div></div>
+<div class="shelf" id="shelf">{% for b in books %}<div class="bookcard rv" data-s="{{ (b.title ~ ' ' ~ (b.author or '') ~ ' ' ~ (b.description or ''))|lower }}" data-c="{{ b.category or '' }}">
+<div class="cover3" style="--h:{{ (b.title|length*47)%360 }};{% if b.cover %}background-image:url('{{ url_for('static', filename='uploads/'+b.cover) }}');background-size:cover{% endif %}"><span>{{ b.title }}</span></div>
+<h3>{{ b.title }}</h3><small>{{ b.author or '' }}{% if b.rname %} · {{ b.rname }}{% endif %}</small><p>{{ b.description }}</p>
+<div class="chips">{% if b.content or b.file %}<a href="{{ url_for('book', i=b.id) }}">📖 Read</a>{% endif %}{% if b.file %}<a href="{{ url_for('static', filename='uploads/'+b.file) }}" download>⬇ Download</a>{% endif %}</div></div>{% endfor %}
+{% for b in legacy %}<div class="bookcard rv" data-s="{{ b.title|lower }}" data-c="Documents"><div class="cover3" style="--h:{{ (b.title|length*47)%360 }}"><span>{{ b.title }}</span></div><h3>{{ b.title }}</h3><small>{{ b.rname }}</small><p>{{ b.description }}</p>
+<div class="chips">{% if b.file %}<a href="{{ url_for('static', filename='uploads/'+b.file) }}" target="_blank">📖 Open</a><a href="{{ url_for('static', filename='uploads/'+b.file) }}" download>⬇ Download</a>{% endif %}{% if b.link %}<a href="{{ b.link }}" target="_blank" rel="noopener">🔗 Link</a>{% endif %}</div></div>{% endfor %}</div>
+<script>(()=>{let c='';const f=()=>{const t=document.getElementById('lf').value.toLowerCase();document.querySelectorAll('#shelf .bookcard').forEach(b=>b.style.display=((!c||b.dataset.c==c)&&b.dataset.s.includes(t))?'':'none')};
+document.getElementById('lf').oninput=f;document.querySelectorAll('#lc a').forEach(a=>a.onclick=e=>{e.preventDefault();c=a.dataset.c;document.querySelectorAll('#lc a').forEach(x=>x.classList.remove('act'));a.classList.add('act');f()})})()</script>{% endblock %}

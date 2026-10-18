@@ -1,0 +1,10 @@
+{% extends "base.html" %}{% block title %}Know Ethiopia{% endblock %}{% block body %}
+<section class="cover" style="--h:140"><span class="tag">Everything in one place</span><h1>🇪🇹 Know Ethiopia</h1><p>Quick facts, timeline, UNESCO sites, famous people, food, music, nature and Amharic phrases.</p></section>
+{% set tabs=[('facts','📌 Facts'),('timeline','📜 Timeline'),('unesco','🏛 UNESCO'),('people','⭐ People'),('food','🍲 Food'),('culture','🎶 Music & dress'),('nature','🦁 Nature'),('religion','🙏 Religion'),('languages','🗣 Languages'),('phrases','💬 Amharic'),('cal','📅 Calendar')] %}
+<div data-tabs><div class="tabs">{% for k,l in tabs %}<button class="{{ 'on' if loop.first }}" data-t="{{ k }}">{{ l }}</button>{% endfor %}</div>
+<div class="pane on" data-p="facts"><div class="cards">{% for a,b in K.facts %}<div class="card"><small>{{ a }}</small><h3>{{ b }}</h3></div>{% endfor %}</div></div>
+<div class="pane" data-p="timeline"><div class="tl">{% for y,t in K.timeline %}<div><b>{{ y }}</b><p>{{ t }}</p></div>{% endfor %}</div></div>
+<div class="pane" data-p="unesco"><div class="cards">{% for n,y in K.unesco %}<div class="card"><h3>{{ n }}</h3><small>{{ y }}</small></div>{% endfor %}</div></div>
+{% for key in ['people','food','culture','nature','religion','languages'] %}<div class="pane" data-p="{{ key }}"><div class="cards">{% for n,t in K[key] %}<div class="card"><h3>{{ n }}</h3><p>{{ t }}</p></div>{% endfor %}</div></div>{% endfor %}
+<div class="pane" data-p="phrases"><div class="tw"><table><tr><th>Amharic</th><th>Say it</th><th>Meaning</th></tr>{% for a,r,e in K.phrases %}<tr><td class="am">{{ a }}</td><td>{{ r }}</td><td>{{ e }}</td></tr>{% endfor %}</table></div></div>
+<div class="pane" data-p="cal"><h3>Ethiopian calendar converter</h3><input type="date" id="gd"><p class="ethbox"><small>Ethiopian date</small><b id="ge">Pick a date</b></p></div></div>{% endblock %}

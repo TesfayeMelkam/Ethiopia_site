@@ -1,0 +1,6 @@
+<h2 class="sec">💬 Visitor Comments</h2>
+<div class="two"><form method="post" action="{{ url_for('comment') }}" class="form"><input type="hidden" name="kind" value="{{ kind }}"><input type="hidden" name="slug" value="{{ slug }}">
+<input name="website" class="hp" tabindex="-1" autocomplete="off"><input name="name" placeholder="Your name" maxlength="40">
+<select name="rating"><option value="5">★★★★★</option><option value="4">★★★★</option><option value="3">★★★</option><option value="2">★★</option><option value="1">★</option></select>
+<textarea name="body" rows="3" maxlength="600" placeholder="Share your experience or extra information…" required></textarea><button class="btn">Post comment</button></form>
+<div>{% for c in comments %}<div class="cm"><b>{{ c.name }}</b> <span class="star">{{ '★'*c.rating }}</span><p>{{ c.body }}</p></div>{% else %}<p class="empty">Be the first to comment.</p>{% endfor %}</div></div>

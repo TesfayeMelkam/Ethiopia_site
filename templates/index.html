@@ -1,0 +1,24 @@
+{% extends "base.html" %}{% block body %}
+<section class="hero"><div class="blob b1x"></div><div class="blob b2x"></div>
+<div class="txt rv"><span class="tag">Land of Origins · 13 Months of Sunshine</span><h1>Discover <span>Ethiopia</span></h1>
+<p>Regions, zones, cities (ketema), churches (bitekrstian), festivals, books and culture, all in one place. Click the map to start.</p>
+<form action="{{ url_for('search') }}" class="bigsearch"><input name="q" placeholder="Try: Lalibela, Gondar, Dessie, coffee…"><button class="btn">Search</button></form>
+<div class="ethbox"><small>Today in Ethiopia</small><b id="ethdate">…</b></div></div>
+<div class="mapwrap rv"><svg viewBox="0 0 600 470" class="map">
+ <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#078930"/><stop offset=".5" stop-color="#FCDD09"/><stop offset="1" stop-color="#DA121A"/></linearGradient>
+ <radialGradient id="f" cx=".5" cy=".4"><stop offset="0" stop-color="#1b4d2b"/><stop offset="1" stop-color="#0d2a18"/></radialGradient></defs>
+ <path class="fill" d="M190 40 L260 30 L330 70 L390 120 L430 160 L500 230 L590 270 L520 300 L430 340 L380 400 L300 440 L250 410 L180 380 L120 330 L100 270 L130 220 L120 160 L150 100 Z"/><path class="b b1" d="M190 40 L260 30 L330 70 L390 120 L430 160 L500 230 L590 270 L520 300 L430 340 L380 400 L300 440 L250 410 L180 380 L120 330 L100 270 L130 220 L120 160 L150 100 Z"/><path class="b b2" d="M190 40 L260 30 L330 70 L390 120 L430 160 L500 230 L590 270 L520 300 L430 340 L380 400 L300 440 L250 410 L180 380 L120 330 L100 270 L130 220 L120 160 L150 100 Z"/>
+ {% for r in regs %}<a href="{{ url_for('region', slug=r.slug) }}" class="pin"><title>{{ r.name }} · {{ r.capital }}</title><circle cx="{{ r.x }}" cy="{{ r.y }}" r="{{ 11 if r.slug=='addis-ababa' else 8 }}"/><circle class="pulse" cx="{{ r.x }}" cy="{{ r.y }}" r="8"/><text x="{{ r.x+12 }}" y="{{ r.y+4 }}">{{ r.name }}</text></a>{% endfor %}
+</svg></div></section>
+<section class="statrow rv"><div><b data-n="{{ regs|length }}">0</b><span>Regions</span></div><div><b data-n="{{ all_zones|length }}">0</b><span>Zones</span></div><div><b data-n="{{ counts.get('city',0) }}">0</b><span>Cities</span></div><div><b data-n="{{ counts.get('church',0) }}">0</b><span>Churches</span></div><div><b data-n="80">0</b><span>Languages</span></div></section>
+<div class="ticker"><div id="facts" data-f='{{ facts|tojson|forceescape }}'></div></div>
+<div class="chips rv" style="justify-content:center"><a href="/search?q=coffee">☕ Coffee</a><a href="/search?q=church">⛪ Churches</a><a href="/search?q=lake">🌊 Lakes</a><a href="/search?q=market">🛍 Markets</a><a href="/search?q=festival">🎉 Festivals</a><a href="/search?q=mountain">⛰ Mountains</a></div>
+<div class="tiles rv"><a href="{{ url_for('library') }}" class="tile"><b>📚</b><h3>Library</h3><p>Read books online or download them.</p></a><a href="{{ url_for('planner') }}" class="tile"><b>🧭</b><h3>Trip planner</h3><p>Pick regions and days, get a plan.</p></a><a href="{{ url_for('know') }}" class="tile"><b>💡</b><h3>Know Ethiopia</h3><p>Facts, history, food, culture.</p></a><a href="{{ url_for('quiz') }}" class="tile"><b>🧠</b><h3>Quiz</h3><p>Test what you know.</p></a></div>
+<h2 class="sec rv">✨ Featured Destinations</h2>
+<div class="snap">{% for i in feat %}<a class="card snapc rv" href="{{ url_for('region', slug=i.region) }}"><small>{{ i.rname }}</small><h3>{{ i.title }}</h3><p>{{ i.description[:110] }}…</p></a>{% endfor %}</div>
+<h2 class="sec rv">🗺 Explore by Region</h2>
+<input id="rf" class="filter" placeholder="Filter regions…">
+<section class="cards" id="rgrid">{% for r in regs %}<a class="card rv" data-s="{{ r.name|lower }} {{ r.capital|lower }}" href="{{ url_for('region', slug=r.slug) }}" style="--h:{{ (r.slug|length*37)%360 }}"><div class="mini"></div><h3>{{ r.name }} <span class="am2">{{ r.name_am or '' }}</span></h3><p>{{ r.about[:105] }}…</p><small>Capital: {{ r.capital }} · {{ r.population }}</small></a>{% endfor %}</section>
+<h2 class="sec rv">🎉 Festivals &amp; Events</h2>
+<div class="timeline">{% for e in events[:6] %}<div class="ev rv"><b>{{ e.date_text }}</b><h4>{{ e.title }}</h4><p>{{ e.description }}</p></div>{% endfor %}</div>
+{% endblock %}

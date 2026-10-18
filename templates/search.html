@@ -1,0 +1,10 @@
+{% extends "base.html" %}{% block title %}Search{% endblock %}{% block body %}
+<h1 class="ph">Search results {% if q %}for “{{ q }}”{% endif %}</h1>
+<form action="{{ url_for('search') }}" class="bigsearch"><input name="q" value="{{ q }}" placeholder="Search a city (ketema), church (bitekrstian), region, zone…" autofocus><button class="btn">Search</button></form>
+{% if q %}<div class="wiki" data-q="{{ q }} Ethiopia"></div>
+<div class="chips"><a href="https://en.wikipedia.org/wiki/Special:Search?search={{ q|urlencode }}+Ethiopia" target="_blank" rel="noopener">Wikipedia</a><a href="https://www.google.com/search?q={{ q|urlencode }}+Ethiopia" target="_blank" rel="noopener">Google</a><a href="https://www.google.com/maps/search/{{ q|urlencode }}+Ethiopia" target="_blank" rel="noopener">Maps</a></div>
+<div class="cards">{% for r in res.regions %}<a class="card" href="{{ url_for('region', slug=r.slug) }}"><h3>{{ r.name }}</h3><p>{{ r.about[:120] }}…</p><small>Region</small></a>{% endfor %}
+{% for z in res.zones %}<a class="card" href="{{ url_for('zone', slug=z.slug) }}"><h3>{{ z.name }}</h3><p>{{ z.about }}</p><small>Zone</small></a>{% endfor %}
+{% for i in res['items'] %}<a class="card" href="{{ url_for('zone', slug=i.zone) if i.zone else url_for('region', slug=i.region) }}"><h3>{{ i.title }}</h3><p>{{ i.description }}</p><small>{{ i.kind }} · {{ i.rname }}</small></a>{% endfor %}</div>
+{% if res.books %}<h2 class="sec">📚 Books</h2><div class="cards">{% for b in res.books %}<a class="card" href="{{ url_for('book', i=b.id) }}"><h3>{{ b.title }}</h3><p>{{ b.description }}</p><small>{{ b.author }}</small></a>{% endfor %}</div>{% endif %}
+{% if not (res.regions or res.zones or res['items'] or res.books) %}<p class="empty">Nothing in our database matched — see the online result above or use the web links.</p>{% endif %}{% endif %}{% endblock %}

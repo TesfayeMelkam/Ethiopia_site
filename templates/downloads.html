@@ -1,0 +1,2 @@
+{% extends "base.html" %}{% block title %}Printable guides{% endblock %}{% block body %}<h1 class="ph">🖨 Printable Guides &amp; Worksheets</h1><p class="empty">Open a page and choose Print → Save as PDF to keep an offline copy. Worksheets are made for classrooms.</p>
+<div class="cards">{% for r in regs %}<div class="card"><h3>{{ r.name }}</h3><a class="btn small" href="{{ url_for('guide', slug=r.slug) }}">📄 Guide</a> <a class="btn small" href="{{ url_for('worksheet', slug=r.slug) }}">📝 Worksheet</a></div>{% endfor %}</div>{% endblock %}

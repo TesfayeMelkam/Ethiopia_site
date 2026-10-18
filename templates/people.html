@@ -1,0 +1,5 @@
+{% extends "base.html" %}{% block title %}People & history{% endblock %}{% block body %}<h1 class="ph">⭐ People &amp; History</h1>
+<div class="chips" id="pc"><a href="#" class="act" data-c="">All</a>{% for c in cats %}<a href="#" data-c="{{ c }}">{{ c }}</a>{% endfor %}</div>
+<div class="cards" id="pg">{% for n,c,y,t in P %}<div class="card" data-c="{{ c }}"><small>{{ c }} · {{ y }}</small><h3>{{ n }}</h3><p>{{ t }}</p></div>{% endfor %}</div>
+<h2 class="sec">👑 Dynasties &amp; Eras</h2><div class="timeline">{% for n,y,t in D %}<div class="ev"><b>{{ y }}</b><h4>{{ n }}</h4><p>{{ t }}</p></div>{% endfor %}</div>
+<script>document.querySelectorAll('#pc a').forEach(a=>a.onclick=e=>{e.preventDefault();document.querySelectorAll('#pc a').forEach(x=>x.classList.remove('act'));a.classList.add('act');document.querySelectorAll('#pg .card').forEach(c=>c.style.display=(!a.dataset.c||c.dataset.c==a.dataset.c)?'':'none')})</script>{% endblock %}

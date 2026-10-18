@@ -1,0 +1,2 @@
+{% extends "base.html" %}{% block title %}Open data{% endblock %}{% block body %}<h1 class="ph">⬇ Open Data</h1><p class="empty">Download the site's data for research or projects. Please verify facts before reuse.</p>
+<div class="cards">{% for n in names %}<div class="card"><h3>{{ n|capitalize }}</h3><a class="btn small" href="/data/{{ n }}.csv">CSV</a> <a class="btn small" href="/data/{{ n }}.json">JSON</a></div>{% endfor %}</div>{% endblock %}

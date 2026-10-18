@@ -1,0 +1,8 @@
+{% extends "base.html" %}{% block title %}{{ z.name }}{% endblock %}{% block body %}
+<p class="crumb"><a href="{{ url_for('region', slug=r.slug) }}">← {{ r.name }}</a> · <a href="{{ url_for('region', slug='addis-ababa') }}">Addis Ababa</a></p>
+<section class="rhead"><h1>{{ z.name }}</h1><p>{{ z.about }}</p><div class="facts"><div><b>Center</b>{{ z.center }}</div><div><b>Region</b>{{ r.name }}</div></div></section>
+{% if sibs %}<div class="chips"><span class="empty">Other zones:</span>{% for x in sibs %}<a href="{{ url_for('zone', slug=x.slug) }}">{{ x.name }}</a>{% endfor %}</div>{% endif %}
+<div class="wiki" data-q="{{ z.name }} Ethiopia"><p class="empty">Loading online info…</p></div>
+<div class="cards indepth"><div class="card"><h3>📜 History</h3><p>{{ z.history }}</p></div><div class="card"><h3>🎭 Culture & People</h3><p>{{ z.culture }}</p></div><div class="card"><h3>🏞 Tourism</h3><p>{{ z.tourism }}</p></div><div class="card"><h3>🌾 Economy</h3><p>{{ z.economy }}</p></div></div>
+{% include "_items.html" %}
+{% set kind='zone' %}{% set slug=z.slug %}{% include "_comments.html" %}{% endblock %}

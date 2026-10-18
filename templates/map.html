@@ -1,0 +1,14 @@
+{% extends "base.html" %}{% block title %}Map{% endblock %}{% block body %}<h1 class="ph">🗺 Interactive Map of Ethiopia</h1>
+<p class="empty">Pins are approximate. Tap a pin for details. Map data © OpenStreetMap contributors (needs internet).</p>
+<div class="chips" id="mf"><label class="chk"><input type="checkbox" value="region" checked> Regions</label><label class="chk"><input type="checkbox" value="city" checked> Cities</label><label class="chk"><input type="checkbox" value="heritage" checked> Heritage</label><label class="chk"><input type="checkbox" value="nature" checked> Nature</label><button class="btn small" id="near">📍 Near me</button></div>
+<div id="map"></div><div id="nl" class="cards"></div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script type="application/json" id="md">{{ pts|tojson }}</script>
+<script>(()=>{const pts=JSON.parse(document.getElementById('md').textContent),map=L.map('map').setView([9.1,40.2],6),G={};
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'&copy; OpenStreetMap contributors'}).addTo(map);
+pts.forEach(p=>{const el=document.createElement('div'),b=document.createElement('b');b.textContent=p.name;const a=document.createElement('a');a.href=p.url;a.textContent=' Open →';el.append(b,document.createElement('br'),a);
+ (G[p.kind]=G[p.kind]||L.layerGroup()).addLayer(L.marker([p.lat,p.lng]).bindPopup(el))});Object.values(G).forEach(g=>g.addTo(map));
+document.querySelectorAll('#mf input').forEach(i=>i.onchange=()=>i.checked?G[i.value].addTo(map):map.removeLayer(G[i.value]));
+const hv=(a,b,c,d)=>{const r=Math.PI/180,x=Math.sin((c-a)*r/2)**2+Math.cos(a*r)*Math.cos(c*r)*Math.sin((d-b)*r/2)**2;return 12742*Math.asin(Math.sqrt(x))};
+document.getElementById('near').onclick=()=>navigator.geolocation?navigator.geolocation.getCurrentPosition(pos=>{const{latitude:la,longitude:ln}=pos.coords;L.circleMarker([la,ln],{color:'#DA121A'}).addTo(map).bindPopup('You are here');map.setView([la,ln],8);
+ const box=document.getElementById('nl');box.innerHTML='';pts.map(p=>({...p,d:hv(la,ln,p.lat,p.lng)})).sort((a,b)=>a.d-b.d).slice(0,6).forEach(p=>{const c=document.createElement('a');c.className='card';c.href=p.url;const h=document.createElement('h3');h.textContent=p.name;const s=document.createElement('small');s.textContent=Math.round(p.d)+' km away · '+p.kind;c.append(h,s);box.appendChild(c)})},()=>alert('Location not available')):0})()</script>{% endblock %}

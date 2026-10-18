@@ -1,0 +1,4 @@
+{% extends "base.html" %}{% block title %}Recipes{% endblock %}{% block body %}<h1 class="ph">🍲 Ethiopian Recipes</h1><p class="empty">Serve with injera. Adjust spices to taste.</p>
+<div class="cards">{% for t,time,serves,ing,steps in R %}<details class="card big" open><summary><h3 style="display:inline">{{ t }}</h3> <small>{{ time }} · serves {{ serves }}</small></summary>
+<h4>Ingredients</h4><ul>{% for x in ing %}<li>{{ x }}</li>{% endfor %}</ul><h4>Steps</h4><ol>{% for s,m in steps %}<li>{{ s }} {% if m %}<button class="btn small tm" data-m="{{ m }}">⏱ {{ m }} min</button>{% endif %}</li>{% endfor %}</ol></details>{% endfor %}</div>
+<script>document.querySelectorAll('.tm').forEach(b=>b.onclick=()=>{let s=+b.dataset.m*60;b.disabled=true;const iv=setInterval(()=>{s--;b.textContent='⏱ '+Math.floor(s/60)+':'+String(s%60).padStart(2,'0');if(s<=0){clearInterval(iv);b.textContent='✅ Done';alert('Time is up!')}},1000)})</script>{% endblock %}

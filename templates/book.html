@@ -1,0 +1,10 @@
+{% extends "base.html" %}{% block title %}{{ b.title }}{% endblock %}{% block body %}
+<p class="crumb"><a href="{{ url_for('library') }}">← Library</a></p>
+<div class="readerhead"><h1>{{ b.title }}</h1><p class="empty">{{ b.author or '' }}{% if b.category %} · {{ b.category }}{% endif %} · {{ b.views or 0 }} reads</p>
+<div class="chips">{% if b.file %}<a href="{{ url_for('static', filename='uploads/'+b.file) }}" download>⬇ Download</a><a href="{{ url_for('static', filename='uploads/'+b.file) }}" target="_blank">↗ Open in new tab</a>{% endif %}</div></div>
+{% if b.content %}<div class="reader" id="reader" data-k="bk{{ b.id }}"><div class="rtools"><button id="fm">A−</button><button id="fp">A+</button><button id="rt">🌙 / ☀</button><span id="pg"></span></div>
+<div class="bookpage" id="page"></div><div class="rnav"><button class="btn" id="prev">← Prev</button><div class="bar2"><i id="prog"></i></div><button class="btn" id="next">Next →</button></div><p class="empty">Tip: use the ← → arrow keys. Your place is remembered.</p></div>
+<script type="application/json" id="bk">{{ b.content|tojson }}</script><script src="{{ url_for('static', filename='reader.js') }}"></script>{% endif %}
+{% if b.file and b.file.lower().endswith('.pdf') %}<iframe class="pdf" src="{{ url_for('static', filename='uploads/'+b.file) }}" title="{{ b.title }}"></iframe>
+{% elif b.file and b.file.rsplit('.',1)[-1].lower() in ['png','jpg','jpeg','gif','webp'] %}<img class="pdf" style="height:auto" src="{{ url_for('static', filename='uploads/'+b.file) }}" alt="">
+{% elif b.file and not b.content %}<p class="card">This file type can't be shown in the browser. Please use the Download button above.</p>{% endif %}{% endblock %}

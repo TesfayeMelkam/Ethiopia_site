@@ -1,0 +1,9 @@
+{% set kinds=[('city','🏙 Cities & Towns (Ketema)'),('church','⛪ Churches & Monasteries (Bitekrstian)'),('tourism','🏞 Tourism & Landmarks'),('culture','🎭 Culture, Festivals & Food'),('image','🖼 Images'),('book','📚 Books & Documents'),('other','🔗 Other Sources')] %}
+{% for k,label in kinds %}{% set g=items|selectattr('kind','equalto',k)|list %}
+<h2 class="sec" id="k-{{ k }}">{{ label }} <span class="badge">{{ g|length }}</span></h2>
+{% if k=='image' %}<div class="gallery">{% for i in g %}<figure><img src="{{ url_for('static', filename='uploads/'+i.file) }}" alt="{{ i.title }}" loading="lazy"><figcaption>{{ i.title }}</figcaption></figure>{% else %}<p class="empty">Nothing added yet.</p>{% endfor %}</div>
+{% else %}<div class="cards">{% for i in g %}<div class="card"><button class="fav" data-id="{{ i.id }}" aria-label="save">♡</button><h3>{{ i.title }}</h3><p>{{ i.description }}</p>
+{% if i.file and i.file.rsplit('.',1)[-1].lower() in ['png','jpg','jpeg','gif','webp'] %}<img src="{{ url_for('static', filename='uploads/'+i.file) }}" alt="" loading="lazy">{% elif i.file %}<a class="btn small" href="{{ url_for('static', filename='uploads/'+i.file) }}" target="_blank">Open file</a>{% endif %}
+{% if i.link %}<a class="btn small" href="{{ i.link }}" target="_blank" rel="noopener">Link</a>{% endif %}
+{% if k in ['city','church','tourism','culture'] %}<div class="chips"><a href="https://en.wikipedia.org/wiki/Special:Search?search={{ i.title|urlencode }}+Ethiopia" target="_blank" rel="noopener">Wikipedia</a><a href="https://www.google.com/maps/search/{{ i.title|urlencode }}+Ethiopia" target="_blank" rel="noopener">Map</a><a href="https://www.google.com/search?q={{ i.title|urlencode }}+Ethiopia" target="_blank" rel="noopener">Web</a></div>{% endif %}</div>
+{% else %}<p class="empty">Nothing added yet.</p>{% endfor %}</div>{% endif %}{% endfor %}

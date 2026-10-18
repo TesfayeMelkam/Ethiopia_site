@@ -1,0 +1,9 @@
+{% extends "base.html" %}{% block title %}{{ r.name }} worksheet{% endblock %}{% block body %}<button class="btn" onclick="print()">🖨 Print</button>
+<article class="print"><h1>Worksheet: {{ r.name }}</h1><p>Name: ____________________ Date: ____________</p>
+<ol><li>What is the capital of {{ r.name }}? ______________________</li><li>Name one language spoken in {{ r.name }}: ______________________</li>
+<li>Write one thing {{ r.name }} is famous for: ______________________________________</li>
+{% if cities %}<li>Circle the cities that are in {{ r.name }}: {% for c in cities %}<b>{{ c.title }}</b>{{ ', ' if not loop.last }}{% endfor %}, Paris, Tokyo</li>{% endif %}
+{% if places %}<li>Draw or write about one place: {% for p in places %}{{ p.title }}{{ ', ' if not loop.last }}{% endfor %}</li>{% endif %}
+{% if zones %}<li>List two zones of {{ r.name }}: ____________ and ____________</li>{% endif %}
+<li>True or False: Ethiopia has 13 months. ______</li></ol>
+<hr><h3>Answer key (teacher)</h3><p>1. {{ r.capital }} · 2. {{ r.languages }} · 3. See {{ r.tourism or 'region page' }} · last: True</p></article>{% endblock %}

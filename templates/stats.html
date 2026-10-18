@@ -1,0 +1,4 @@
+{% extends "base.html" %}{% block title %}Statistics{% endblock %}{% block body %}<h1 class="ph">📊 Statistics</h1><p class="empty">Approximate figures from this site's region data (not official statistics). Total of listed regions: about {{ total }} million people.</p>
+<h2 class="sec">Population by region (millions)</h2><div class="bars">{% set m=pop[0][1] or 1 %}{% for n,v in pop %}<div><span>{{ n }}</span><i style="width:{{ ((v/m)*100)|round }}%">{{ v }}</i></div>{% endfor %}</div>
+<h2 class="sec">Area by region (km²)</h2><div class="bars">{% set m=area[0][1] or 1 %}{% for n,v in area %}<div><span>{{ n }}</span><i style="width:{{ ((v/m)*100)|round }}%">{{ '{:,.0f}'.format(v) }}</i></div>{% endfor %}</div>
+<h2 class="sec">Places in this site</h2><div class="statrow">{% for c in counts %}<div><b>{{ c.n }}</b><span>{{ c.kind }}</span></div>{% endfor %}</div>{% endblock %}

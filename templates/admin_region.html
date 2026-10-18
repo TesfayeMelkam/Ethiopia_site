@@ -1,0 +1,5 @@
+{% extends "base.html" %}{% block body %}<h1 class="ph">Edit region: {{ r.name }}</h1>
+<form method="post" enctype="multipart/form-data" class="form">
+{% for k,l in [('capital','Capital'),('population','Population'),('area','Area'),('languages','Languages')] %}<label>{{ l }}<input name="{{ k }}" value="{{ r[k] or '' }}"></label>{% endfor %}
+{% for k,l in [('about','About'),('history','History'),('culture','Culture'),('tourism','Tourism'),('economy','Economy'),('food','Food'),('climate','Climate'),('travel','Travel tips')] %}<label>{{ l }}<textarea name="{{ k }}" rows="3">{{ r[k] or '' }}</textarea></label>{% endfor %}
+<label>Cover image<input type="file" name="cover" accept="image/*"></label><button class="btn">Save region</button></form>{% endblock %}

@@ -1,0 +1,5 @@
+{% extends "base.html" %}{% block body %}<h1 class="ph">Edit item</h1><form method="post" enctype="multipart/form-data" class="form narrow">
+<input name="title" value="{{ it.title }}" required><textarea name="description" rows="4">{{ it.description or '' }}</textarea><input name="link" value="{{ it.link or '' }}" placeholder="Link">
+<select name="kind">{% for k in ['city','church','tourism','culture','book','image','other'] %}<option {{ 'selected' if k==it.kind }}>{{ k }}</option>{% endfor %}</select>
+<select name="zone"><option value="">— No zone —</option>{% for z in all_zones %}<option value="{{ z.slug }}" {{ 'selected' if z.slug==it.zone }}>{{ z.name }}</option>{% endfor %}</select>
+<input type="file" name="file"><button class="btn">Save</button></form>{% endblock %}

@@ -1,0 +1,7 @@
+{% extends "base.html" %}{% block title %}Festivals{% endblock %}{% block body %}<h1 class="ph">🎉 Ethiopian Festivals &amp; Events</h1><p class="empty">Dates follow the Ethiopian or lunar calendars and can vary by a day or more.</p>
+<div class="chips" id="fk"><a href="#" data-k="">All</a><a href="#" data-k="national">National</a><a href="#" data-k="religious">Religious</a><a href="#" data-k="cultural">Cultural</a></div>
+<select id="fr" class="filter"><option value="">All regions</option>{% for r in all_regions %}<option value="{{ r.slug }}">{{ r.name }}</option>{% endfor %}</select>
+<div class="timeline" id="fl">{% for e in events %}<div class="ev" data-k="{{ e.kind }}" data-r="{{ e.region or '' }}"><small class="star">{{ e.kind or 'cultural' }}{% if e.rname %} · <a href="{{ url_for('region', slug=e.region) }}">{{ e.rname }}</a>{% endif %}</small><br><b>{{ e.date_text }}</b><h4>{{ e.title }}</h4><p>{{ e.description }}</p></div>{% endfor %}</div>
+<script>(()=>{let k='',r='';const f=()=>document.querySelectorAll('#fl .ev').forEach(e=>e.style.display=((!k||e.dataset.k==k)&&(!r||e.dataset.r==r||!e.dataset.r))?'':'none');
+document.querySelectorAll('#fk a').forEach(a=>a.onclick=ev=>{ev.preventDefault();k=a.dataset.k;document.querySelectorAll('#fk a').forEach(x=>x.classList.remove('act'));a.classList.add('act');f()});
+document.getElementById('fr').onchange=e=>{r=e.target.value;f()}})()</script>{% endblock %}

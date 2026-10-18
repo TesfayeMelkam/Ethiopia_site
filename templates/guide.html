@@ -1,0 +1,7 @@
+{% extends "base.html" %}{% block title %}{{ r.name }} guide{% endblock %}{% block body %}<button class="btn" onclick="print()">🖨 Print / Save as PDF</button>
+<article class="print"><h1>{{ r.name }} {{ r.name_am or '' }}</h1><p>{{ r.about }}</p><p><b>Capital:</b> {{ r.capital }} · <b>Population:</b> {{ r.population }} · <b>Area:</b> {{ r.area }} · <b>Languages:</b> {{ r.languages }}</p>
+{% for l,k in [('History','history'),('Culture','culture'),('Tourism','tourism'),('Economy','economy'),('Food','food'),('Climate','climate'),('Travel tips','travel')] %}{% if r[k] %}<h3>{{ l }}</h3><p>{{ r[k] }}</p>{% endif %}{% endfor %}
+{% if zones %}<h3>Zones</h3><ul>{% for z in zones %}<li><b>{{ z.name }}</b> ({{ z.center }}): {{ z.about }}</li>{% endfor %}</ul>{% endif %}
+<h3>Places</h3><ul>{% for i in items %}<li><b>{{ i.title }}</b> ({{ i.kind }}): {{ i.description }}</li>{% endfor %}</ul>
+{% if fests %}<h3>Festivals</h3><ul>{% for e in fests %}<li><b>{{ e.title }}</b> ({{ e.date_text }}): {{ e.description }}</li>{% endfor %}</ul>{% endif %}
+<p class="empty">Source: Ethiopia Information Portal. Facts not independently verified; please check official sources.</p></article>{% endblock %}
